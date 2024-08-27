@@ -4,6 +4,8 @@
 template <typename T>
 MPointer<T>::MPointer() : ptr(new T()), id(-1), refCount(new RefCount()) {
     refCount->addRef(); //Incrementa el contador al crear un nuevo MPointer
+    // Registro el MPointer en MPointerGC después de inicializarlo completamente
+    id = MPointerGC<T>::getInstance().registerPointer(this);
     std::cout << "MPointer creado. Valor: " << *ptr << ", Contador de Referencias: " << refCount->getCount() << std::endl;
 }
 
@@ -18,13 +20,16 @@ MPointer<T>::~MPointer() {
     if (ptr && refCount->release()) {
         delete ptr; //Libera el objeto si el contador llega a cero
         delete refCount; //Libera el contador de referencias
+
+        // Notifica al recolector de basura que este puntero ha sido destruido
+        MPointerGC<T>::getInstance().unregisterPointer(id);
+        std::cout << "MPointer destruido. Valor: " << *ptr << ", Contador de Referencias: " << refCount->getCount() << std::endl;
     }
 }
 
 template <typename T>
 MPointer<T> MPointer<T>::New() {
     MPointer<T> mp;
-    //Aquí se puede registrar el MPointer en MPointerGC y asignar un ID
     return mp;
 }
 
@@ -41,21 +46,36 @@ T MPointer<T>::operator&() {
 template <typename T>
 MPointer<T>& MPointer<T>::operator=(const MPointer<T>& other) {
     if (this != &other) {
+        // Si ptr no es nullptr y refCount puede liberar el objeto, lo hacemos
         if (ptr && refCount->release()) {
-            delete ptr; //Libera el objeto si el contador llega a cero
-            delete refCount; //Libera el contador de referencias
+            delete ptr; // Libera el objeto si el contador llega a cero
+            delete refCount; // Libera el contador de referencias
+            MPointerGC<T>::getInstance().unregisterPointer(id); // Desregistra el puntero en el GC
         }
+
+        // Asignar el nuevo puntero y actualizar el ID
         ptr = other.ptr;
         refCount = other.refCount;
-        refCount->addRef(); //Incrementa el contador de referencias en la asignación
-        std::cout << "MPointer asignado. Valor: " << *ptr << ", Contador de Referencias: " << refCount->getCount() << std::endl;
+        id = other.id;
+
+        // Incrementar el contador de referencias del puntero copiado
+        refCount->addRef();
+
+        // Registrar el nuevo puntero en el recolector de basura
+        MPointerGC<T>::getInstance().registerPointer(this); // O actualizar el ID si es necesario
     }
     return *this;
 }
 
 template <typename T>
-MPointer<T>& MPointer<T>::operator=(T value) {
-    *ptr = value;
+MPointer<T>& MPointer<T>::operator=(const T& value) {
+    if (ptr) {
+        *ptr = value; // Asigna el valor al objeto apuntado
+    } else {
+        ptr = new T(value); // Crea un nuevo objeto si ptr es nullptr
+        refCount = new RefCount(); // Inicializa el contador de referencias
+        refCount->addRef(); // Incrementa el contador de referencias
+    }
     return *this;
 }
 

@@ -7,35 +7,39 @@
 template <typename T>
 class MPointer {
 private:
-    T* ptr; //Puntero encapsulado
-    int id; //ID proporcionado por MPointerGC
-    RefCount* refCount; //Contador de referencias personalizado
+    T* ptr; // Puntero encapsulado
+    int id; // ID proporcionado por MPointerGC
+    RefCount* refCount; // Contador de referencias personalizado
 
-    MPointer(); //Constructor privado
+    MPointer(); // Constructor privado
 
 public:
-    //Constructor de copia
+    // Constructor de copia
     MPointer(const MPointer& other);
 
-    //Destructor
+    // Destructor
     ~MPointer();
 
-    //Método estático para crear un nuevo MPointer
+    // Método estático para crear un nuevo MPointer
     static MPointer<T> New();
 
-    //Sobrecarga de operadores
+    // Sobrecarga del operador de asignación para otro MPointer
+    MPointer<T>& operator=(const MPointer<T>& other);
+
+    // Sobrecarga del operador de asignación para un valor de tipo T
+    MPointer<T>& operator=(const T& value);
+
+    // Sobrecarga del operador de desreferenciación
     T& operator*();
     T operator&();
-    MPointer<T>& operator=(const MPointer<T>& other);
-    MPointer<T>& operator=(T value);
 
-    //Obtener el conteo de referencias
+    // Obtener el conteo de referencias
     int getRefCount() const;
 
-    //Imprimir información del puntero
+    // Imprimir información del puntero
     void printInfo() const;
 };
 
-#include "MPointer.tpp" //Incluye la implementación template
+#include "MPointer.tpp" // Incluye la implementación template
 
-#endif //MPOINTER_H
+#endif // MPOINTER_H
