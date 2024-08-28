@@ -39,7 +39,7 @@ public:
         std::cout << std::endl;
     }
 
-    // Función de partición
+    // Función de partición para QuickSort
     std::shared_ptr<Node> partition(std::shared_ptr<Node> low, std::shared_ptr<Node> high) {
         MPointer<T> pivot = high->data;
         auto i = low ? low->prev : nullptr;
@@ -64,10 +64,75 @@ public:
         }
     }
 
-    // Función pública para ordenar la lista
+    // Función pública para ordenar la lista con QuickSort
     void quickSort() {
         quickSortRec(head, tail);
     }
+
+    // BubbleSort
+    void bubbleSort() {
+        if (!head) return;
+        
+        bool swapped;
+        do {
+            swapped = false;
+            auto current = head;
+            while (current && current->next) {
+                if (*current->data > *current->next->data) {
+                    std::swap(current->data, current->next->data);
+                    swapped = true;
+                }
+                current = current->next;
+            }
+        } while (swapped);
+    }
+
+    // InsertionSort
+    void insertionSort() {
+    if (!head) return;
+
+    // Initialize the sorted list
+    auto sorted = head;
+    auto unsorted = head->next;
+    sorted->prev = nullptr;
+    sorted->next = nullptr;
+
+    while (unsorted) {
+        auto current = unsorted;
+        unsorted = unsorted->next;
+
+        // Detach the current node from the unsorted list
+        current->next = nullptr;
+        current->prev = nullptr;
+
+        // Insert the current node into the sorted list
+        if (*current->data < *head->data) {
+            // Insert at the beginning
+            current->next = head;
+            head->prev = current;
+            head = current;
+        } else {
+            // Insert in the middle or at the end
+            auto temp = head;
+            while (temp->next && *temp->next->data < *current->data) {
+                temp = temp->next;
+            }
+            current->next = temp->next;
+            if (temp->next) {
+                temp->next->prev = current;
+            }
+            temp->next = current;
+            current->prev = temp;
+        }
+    }
+
+    // Recalculate the tail pointer
+    tail = head;
+    while (tail->next) {
+        tail = tail->next;
+    }
+}
+
 };
 
 // Programa principal para probar las funciones
@@ -99,9 +164,39 @@ int main() {
     std::cout << "Lista antes de ordenar: ";
     list.printList();
 
+    // QuickSort
     list.quickSort();
+    std::cout << "Lista despues de QuickSort: ";
+    list.printList();
 
-    std::cout << "Lista después de ordenar: ";
+    // Re-inicializa la lista para otras pruebas
+    list = DoublyLinkedList<int>();
+    list.append(ptr1);
+    list.append(ptr2);
+    list.append(ptr3);
+    list.append(ptr4);
+    list.append(ptr5);
+    list.append(ptr6);
+    list.append(ptr7);
+
+    // BubbleSort
+    list.bubbleSort();
+    std::cout << "Lista despues de BubbleSort: ";
+    list.printList();
+
+    // Re-inicializa la lista para otras pruebas
+    list = DoublyLinkedList<int>();
+    list.append(ptr1);
+    list.append(ptr2);
+    list.append(ptr3);
+    list.append(ptr4);
+    list.append(ptr5);
+    list.append(ptr6);
+    list.append(ptr7);
+
+    // InsertionSort
+    list.insertionSort();
+    std::cout << "Lista despues de InsertionSort: ";
     list.printList();
 
     return 0;

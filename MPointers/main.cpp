@@ -48,23 +48,3 @@ int main() {
 
     return 0;
 }
-
-
-/*
-int main() {
-    MPointer<int> myPtr = MPointer<int>::New(); // Crear un nuevo MPointer para int
-    MPointer<int> myPtr2 = MPointer<int>::New(); // Crear otro MPointer para int
-
-    *myPtr = 5; // Asigna el valor 5 al objeto apuntado por myPtr
-    myPtr2 = myPtr; // Copia el puntero y el ID de myPtr a myPtr2
-
-    myPtr2 = 6; // Asigna el valor 6 al objeto apuntado por myPtr2 (que es el mismo objeto que myPtr)
-
-    std::cout << "myPtr: ";
-    myPtr.printInfo(); // Debería mostrar el valor 6 y el conteo de referencias
-
-    std::cout << "myPtr2: ";
-    myPtr2.printInfo(); // Debería mostrar el valor 6 y el conteo de referencias
-
-    return 0;
-}*/
