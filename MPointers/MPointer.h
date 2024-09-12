@@ -2,44 +2,114 @@
 #define MPOINTER_H
 
 #include "MPointerGC.h"
-#include "RefCount.h" // Incluye el archivo de encabezado de RefCount
+#include <iostream>
+
+template <typename T>
+class RefCount {
+public:
+    int count;
+    T* ptr;
+
+    RefCount(T* p) : count(1), ptr(p) {}
+    ~RefCount() {
+        delete ptr;
+    }
+};
 
 template <typename T>
 class MPointer {
 private:
-    T* ptr; // Puntero encapsulado
-    int id; // ID proporcionado por MPointerGC
-    RefCount* refCount; // Contador de referencias personalizado
-
-    MPointer(); // Constructor privado
+    RefCount<T>* refCount;
+    int id;
 
 public:
-    // Constructor de copia
-    MPointer(const MPointer& other);
+    // Constructor
+    MPointer(T* p = nullptr) : refCount(new RefCount<T>(p)) {
+        id = MPointerGC::getInstance().generateId();
+        MPointerGC::getInstance().addPointer(refCount->ptr, id);
+    }
 
     // Destructor
-    ~MPointer();
+    ~MPointer() {
+        release();
+    }
 
-    // Método estático para crear un nuevo MPointer
-    static MPointer<T> New();
+    // Constructor de copia
+    MPointer(const MPointer& other) : refCount(other.refCount), id(other.id) {
+        ++refCount->count;
+    }
 
-    // Sobrecarga del operador de asignación para otro MPointer
-    MPointer<T>& operator=(const MPointer<T>& other);
+    // Operador de asignación de copia
+    MPointer& operator=(const MPointer& other) {
+        if (this != &other) {
+            release();
+            refCount = other.refCount;
+            id = other.id;
+            ++refCount->count;
+        }
+        return *this;
+    }
 
-    // Sobrecarga del operador de asignación para un valor de tipo T
-    MPointer<T>& operator=(const T& value);
+    // Operador de acceso al puntero
+    T* operator->() const {
+        return refCount->ptr;
+    }
 
-    // Sobrecarga del operador de desreferenciación
-    T& operator*();
-    T operator&();
+    // Operador de desreferenciación
+    T& operator*() const {
+        return *refCount->ptr;
+    }
 
-    // Obtener el conteo de referencias
-    int getRefCount() const;
+    // Operador de asignación para el tipo T
+    MPointer& operator=(const T& value) {
+        if (refCount->ptr) {
+            *refCount->ptr = value;
+        }
+        return *this;
+    }
 
-    // Imprimir información del puntero
-    void printInfo() const;
+    // Operador de asignación para el tipo T*
+    MPointer& operator=(T* p) {
+        if (refCount->ptr != p) {
+            release();
+            refCount = new RefCount<T>(p);
+            id = MPointerGC::getInstance().generateId(); // Nuevo ID en caso de reasignación
+            MPointerGC::getInstance().addPointer(refCount->ptr, id);
+        }
+        return *this;
+    }
+
+    // Verificar si el puntero es nulo
+    bool isNull() const {
+        return refCount->ptr == nullptr;
+    }
+
+    // Getter del puntero
+    T* get() const {
+        return refCount->ptr;
+    }
+
+    // Setter del puntero
+    void set(T* p) {
+        release();
+        refCount = new RefCount<T>(p);
+        id = MPointerGC::getInstance().generateId(); // Nuevo ID en caso de reasignación
+        MPointerGC::getInstance().addPointer(refCount->ptr, id);
+    }
+
+    // Método estático para crear un nuevo MPointer con argumentos
+    template<typename... Args>
+    static MPointer New(Args&&... args) {
+        return MPointer(new T(std::forward<Args>(args)...));
+    }
+
+private:
+    void release() {
+        if (--refCount->count == 0) {
+            MPointerGC::getInstance().removePointer(refCount->ptr);
+            delete refCount;
+        }
+    }
 };
-
-#include "MPointer.tpp" // Incluye la implementación template
 
 #endif // MPOINTER_H
