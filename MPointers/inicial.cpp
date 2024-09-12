@@ -49,7 +49,7 @@ int main() {
     return 0;
 }*/
 
-#include "ListaDobleEnlazada.h"
+/*#include "ListaDobleEnlazada.h"
 
 int main() {
     ListaDobleEnlazada<int> lista;
@@ -58,6 +58,7 @@ int main() {
     lista.insertar(10);
     lista.insertar(20);
     lista.insertar(30);
+    lista.insertar(85);
 
     // Imprimir la lista hacia adelante
     std::cout << "Lista hacia adelante: ";
@@ -72,6 +73,34 @@ int main() {
 
     // Imprimir la lista después de la eliminación
     std::cout << "Lista despues de eliminar 20: ";
+    lista.imprimirAdelante();
+
+    // Asegúrate de detener el recolector de basura
+    MPointerGC::getInstance().stopGC();
+
+    return 0;
+}*/
+
+#include "ListaDobleEnlazada.h"
+
+int main() {
+    ListaDobleEnlazada<int> lista;
+
+    // Insertar valores
+    lista.insertar(30);
+    lista.insertar(10);
+    lista.insertar(85);
+    lista.insertar(20);
+
+    // Imprimir la lista antes de ordenar
+    std::cout << "Lista antes de ordenar: ";
+    lista.imprimirAdelante();
+
+    // Ordenar la lista
+    lista.ordenar();
+
+    // Imprimir la lista después de ordenar
+    std::cout << "Lista después de ordenar: ";
     lista.imprimirAdelante();
 
     // Asegúrate de detener el recolector de basura

@@ -103,6 +103,15 @@ public:
         return MPointer(new T(std::forward<Args>(args)...));
     }
 
+    // Operadores de comparación
+    bool operator==(const MPointer& other) const {
+        return refCount->ptr == other.refCount->ptr;
+    }
+
+    bool operator!=(const MPointer& other) const {
+        return refCount->ptr != other.refCount->ptr;
+    }
+
 private:
     void release() {
         if (--refCount->count == 0) {

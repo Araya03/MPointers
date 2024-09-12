@@ -2,6 +2,7 @@
 #define LISTADOBLEENLAZADA_H
 
 #include "Nodo.h"
+#include "Algoritmos.h"
 #include <iostream>
 
 template <typename T>
@@ -77,6 +78,12 @@ public:
     // Obtener el último nodo
     MPointer<Nodo<T>> obtenerCola() const {
         return cola;
+    }
+
+    // Función pública para ordenar la lista
+    void ordenar() {
+        MPointer<Nodo<T>> last = getLastNode(cabeza);
+        quickSort(cabeza, last);
     }
 };
 
