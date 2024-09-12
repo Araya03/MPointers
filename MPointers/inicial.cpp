@@ -81,27 +81,46 @@ int main() {
     return 0;
 }*/
 
+
 #include "ListaDobleEnlazada.h"
+#include "QuickSort.h"
+#include "BubbleSort.h"
+#include "InsertionSort.h"
 
 int main() {
     ListaDobleEnlazada<int> lista;
 
     // Insertar valores
-    lista.insertar(30);
-    lista.insertar(10);
+    lista.insertar(100);
+    lista.insertar(2);
+    lista.insertar(37);
     lista.insertar(85);
-    lista.insertar(20);
+    lista.insertar(269);
+    lista.insertar(13);
 
-    // Imprimir la lista antes de ordenar
-    std::cout << "Lista antes de ordenar: ";
+    // Imprimir la lista hacia adelante
+    std::cout << "Lista hacia adelante: ";
     lista.imprimirAdelante();
 
-    // Ordenar la lista
-    lista.ordenar();
+    // Imprimir la lista hacia atrás
+    std::cout << "Lista hacia atras: ";
+    lista.imprimirAtras();
 
-    // Imprimir la lista después de ordenar
-    std::cout << "Lista después de ordenar: ";
+    // Ordenar la lista usando QuickSort
+    lista.quickSort();
+    std::cout << "Lista ordenada con QuickSort: ";
     lista.imprimirAdelante();
+
+    // Ordenar la lista usando BubbleSort
+    bubbleSort(lista);
+    std::cout << "Lista ordenada con BubbleSort: ";
+    lista.imprimirAdelante();
+
+    // Ordenar la lista usando InsertionSort
+    insertionSort(lista);
+    std::cout << "Lista ordenada con InsertionSort: ";
+    lista.imprimirAdelante();
+
 
     // Asegúrate de detener el recolector de basura
     MPointerGC::getInstance().stopGC();

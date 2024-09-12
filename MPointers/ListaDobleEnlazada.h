@@ -2,7 +2,7 @@
 #define LISTADOBLEENLAZADA_H
 
 #include "Nodo.h"
-#include "Algoritmos.h"
+#include "QuickSort.h"
 #include <iostream>
 
 template <typename T>
@@ -81,9 +81,9 @@ public:
     }
 
     // Función pública para ordenar la lista
-    void ordenar() {
+    void quickSort() {
         MPointer<Nodo<T>> last = getLastNode(cabeza);
-        quickSort(cabeza, last);
+        QuickSort(cabeza, last);
     }
 };
 

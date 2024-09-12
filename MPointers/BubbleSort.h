@@ -10,7 +10,7 @@
 
 // Implementación del BubbleSort
 template <typename T>
-void bubbleSort(ListaDobleEnlazada<T>& lista) {
+void BubbleSort(ListaDobleEnlazada<T>& lista) {
     if (lista.obtenerCabeza().isNull()) {
         return; // Lista vacía
     }
@@ -32,8 +32,8 @@ void bubbleSort(ListaDobleEnlazada<T>& lista) {
 
 // Función para ordenar la lista con BubbleSort
 template <typename T>
-void ordenarListaBubbleSort(ListaDobleEnlazada<T>& lista) {
-    bubbleSort(lista);
+void bubbleSort(ListaDobleEnlazada<T>& lista) {
+    BubbleSort(lista);
 }
 
 #endif // BUBBLESORT_H

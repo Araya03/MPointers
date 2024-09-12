@@ -21,7 +21,7 @@ public:
     void addPointer(void* ptr, int id) {
         std::lock_guard<std::mutex> lock(mtx);
         pointers.push_back({ptr, id});
-        std::cout << "Anadido puntero con ID: " << id << std::endl;
+        //std::cout << "Anadido puntero con ID: " << id << std::endl;
     }
 
     // Eliminar MPointer de la lista
@@ -45,13 +45,13 @@ public:
 
     // Parar el thread del GC
     void stopGC() {
-        std::cout << "Solicitando parada del hilo del recolector de basura..." << std::endl;
+        //std::cout << "Solicitando parada del hilo del recolector de basura..." << std::endl;
         running = false;
         // Asegúrate de que el hilo del GC termine correctamente
         if (gcThread.joinable()) {
-            std::cout << "Esperando a que el hilo del recolector de basura termine..." << std::endl;
+            //std::cout << "Esperando a que el hilo del recolector de basura termine..." << std::endl;
             gcThread.join();
-            std::cout << "Hilo del recolector de basura detenido." << std::endl;
+            //std::cout << "Hilo del recolector de basura detenido." << std::endl;
         }
     }
 
@@ -65,7 +65,7 @@ private:
     }
 
     void cleanup() {
-        std::cout << "Ejecutando limpieza de recolector de basura" << std::endl;
+        //std::cout << "Ejecutando limpieza de recolector de basura" << std::endl;
         std::lock_guard<std::mutex> lock(mtx);
         
         std::list<void*> toDelete;
@@ -81,13 +81,13 @@ private:
             }
 
             if (!hasReferences) {
-                std::cout << "Marcando puntero con ID: " << it->id << " para liberacion" << std::endl;
+                //std::cout << "Marcando puntero con ID: " << it->id << " para liberacion" << std::endl;
                 toDelete.push_back(it->ptr);
             }
         }
 
         for (auto ptr : toDelete) {
-            std::cout << "Liberando puntero: " << ptr << std::endl;
+            //std::cout << "Liberando puntero: " << ptr << std::endl;
             delete static_cast<int*>(ptr); // Ajusta el tipo según sea necesario
             pointers.remove_if([ptr](const PointerInfo& info) { return info.ptr == ptr; });
         }

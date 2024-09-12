@@ -39,11 +39,11 @@ MPointer<Nodo<T>> partition(MPointer<Nodo<T>> low, MPointer<Nodo<T>> high) {
 
 // Función QuickSort
 template <typename T>
-void quickSort(MPointer<Nodo<T>> low, MPointer<Nodo<T>> high) {
+void QuickSort(MPointer<Nodo<T>> low, MPointer<Nodo<T>> high) {
     if (!low.isNull() && !high.isNull() && low != high && low != high->siguiente) {
         MPointer<Nodo<T>> p = partition(low, high);
-        quickSort(low, p->anterior);
-        quickSort(p->siguiente, high);
+        QuickSort(low, p->anterior);
+        QuickSort(p->siguiente, high);
     }
 }
 
