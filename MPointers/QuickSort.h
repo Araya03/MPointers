@@ -4,11 +4,10 @@
 #include "MPointer.h"
 #include "Nodo.h"
 #include "ListaDobleEnlazada.h"
-
 #include <iostream>
-#include <utility> // Para std::swap
+#include <utility>
 
-// Función para encontrar el nodo con el valor mínimo
+//Función para encontrar el nodo con el valor mínimo
 template <typename T>
 MPointer<Nodo<T>> findMinNode(MPointer<Nodo<T>> start) {
     MPointer<Nodo<T>> minNode = start;
@@ -24,7 +23,7 @@ MPointer<Nodo<T>> findMinNode(MPointer<Nodo<T>> start) {
     return minNode;
 }
 
-// Función de partición para QuickSort
+//Función de partición para QuickSort
 template <typename T>
 MPointer<Nodo<T>> partition(MPointer<Nodo<T>> low, MPointer<Nodo<T>> high) {
     T pivot = high->data;
@@ -41,7 +40,7 @@ MPointer<Nodo<T>> partition(MPointer<Nodo<T>> low, MPointer<Nodo<T>> high) {
     return i;
 }
 
-// Función QuickSort
+//Función QuickSort
 template <typename T>
 void QuickSort(MPointer<Nodo<T>> low, MPointer<Nodo<T>> high) {
     if (!low.isNull() && !high.isNull() && low != high && low != high->siguiente) {
@@ -51,7 +50,7 @@ void QuickSort(MPointer<Nodo<T>> low, MPointer<Nodo<T>> high) {
     }
 }
 
-// Función para obtener el último nodo
+//Función para obtener el último nodo
 template <typename T>
 MPointer<Nodo<T>> getLastNode(MPointer<Nodo<T>> head) {
     MPointer<Nodo<T>> temp = head;
@@ -61,11 +60,11 @@ MPointer<Nodo<T>> getLastNode(MPointer<Nodo<T>> head) {
     return temp;
 }
 
-// Función para ordenar la lista con QuickSort
+//Función para ordenar la lista con QuickSort
 template <typename T>
 void quickSort(ListaDobleEnlazada<T>& lista) {
     MPointer<Nodo<T>> last = getLastNode(lista.obtenerCabeza());
     QuickSort(lista.obtenerCabeza(), last);
 }
 
-#endif // QUICKSORT_H
+#endif //QUICKSORT_H

@@ -4,11 +4,10 @@
 #include "MPointer.h"
 #include "Nodo.h"
 #include "ListaDobleEnlazada.h"
-
 #include <iostream>
-#include <utility> // Para std::swap
+#include <utility>
 
-// Implementación del BubbleSort
+//Implementación del BubbleSort
 template <typename T>
 void BubbleSort(ListaDobleEnlazada<T>& lista) {
     if (lista.obtenerCabeza().isNull()) {
@@ -30,10 +29,10 @@ void BubbleSort(ListaDobleEnlazada<T>& lista) {
     } while (swapped);
 }
 
-// Función para ordenar la lista con BubbleSort
+//Función para ordenar la lista con BubbleSort
 template <typename T>
 void bubbleSort(ListaDobleEnlazada<T>& lista) {
     BubbleSort(lista);
 }
 
-#endif // BUBBLESORT_H
+#endif //BUBBLESORT_H

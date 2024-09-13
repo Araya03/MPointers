@@ -1,4 +1,3 @@
-// MPointerGC.h
 #ifndef MPOINTERGC_H
 #define MPOINTERGC_H
 
@@ -9,7 +8,7 @@
 #include <list>
 #include <mutex>
 
-// Clase singleton para gestionar las instancias de MPointer
+//Clase singleton para gestionar las instancias de MPointer
 class MPointerGC {
 public:
     static MPointerGC& getInstance() {
@@ -17,25 +16,25 @@ public:
         return instance;
     }
 
-    // Agregar MPointer a la lista
+    //Agregar MPointer a la lista
     void addPointer(void* ptr, int id) {
         std::lock_guard<std::mutex> lock(mtx);
         pointers.push_back({ptr, id});
         //std::cout << "Anadido puntero con ID: " << id << std::endl;
     }
 
-    // Eliminar MPointer de la lista
+    //Eliminar MPointer de la lista
     void removePointer(void* ptr) {
         std::lock_guard<std::mutex> lock(mtx);
         pointers.remove_if([ptr](const PointerInfo& info) { return info.ptr == ptr; });
     }
 
-    // Generar nuevo ID
+    //Generar nuevo ID
     int generateId() {
         return ++currentId;
     }
 
-    // Ejecutar el recolector de basura
+    //Ejecutar el recolector de basura
     void runGC() {
         while (running) {
             std::this_thread::sleep_for(std::chrono::seconds(interval));
@@ -43,7 +42,7 @@ public:
         }
     }
 
-    // Parar el thread del GC
+    //Parar el thread del GC
     void stopGC() {
         //std::cout << "Solicitando parada del hilo del recolector de basura..." << std::endl;
         running = false;
@@ -105,9 +104,9 @@ private:
     std::thread gcThread;
     std::mutex mtx;
 
-    // Eliminar constructor de copia y operador de asignación
+    //Eliminar constructor de copia y operador de asignación
     MPointerGC(const MPointerGC&) = delete;
     MPointerGC& operator=(const MPointerGC&) = delete;
 };
 
-#endif // MPOINTERGC_H
+#endif //MPOINTERGC_H

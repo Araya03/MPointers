@@ -2,7 +2,6 @@
 #define LISTADOBLEENLAZADA_H
 
 #include "Nodo.h"
-//#include "QuickSort.h"
 #include <iostream>
 
 template <typename T>
@@ -14,7 +13,7 @@ private:
 public:
     ListaDobleEnlazada() : cabeza(nullptr), cola(nullptr) {}
 
-    // Insertar al final de la lista
+    //Insertar al final de la lista
     void insertar(T valor) {
         MPointer<Nodo<T>> nuevoNodo = MPointer<Nodo<T>>::New(valor);
 
@@ -28,8 +27,8 @@ public:
         }
     }
 
-    // Imprimir la lista hacia adelante
-    void imprimirAdelante() const {
+    //Imprimir la lista
+    void imprimir() const {
         MPointer<Nodo<T>> actual = cabeza;
         while (!actual.isNull()) {
             std::cout << actual->data << " ";
@@ -39,16 +38,16 @@ public:
     }
 
     // Imprimir la lista hacia atrás
-    void imprimirAtras() const {
+    /*void imprimirAtras() const {
         MPointer<Nodo<T>> actual = cola;
         while (!actual.isNull()) {
             std::cout << actual->data << " ";
             actual = actual->anterior;
         }
         std::cout << std::endl;
-    }
+    }*/
 
-    // Eliminar un nodo de la lista
+    //Eliminar un nodo de la lista
     void eliminar(T valor) {
         MPointer<Nodo<T>> actual = cabeza;
         while (!actual.isNull()) {
@@ -70,21 +69,15 @@ public:
         }
     }
 
-    // Obtener el primer nodo
+    //Obtener el primer nodo
     MPointer<Nodo<T>> obtenerCabeza() const {
         return cabeza;
     }
 
-    // Obtener el último nodo
+    //Obtener el último nodo
     MPointer<Nodo<T>> obtenerCola() const {
         return cola;
     }
-
-    // Función pública para ordenar la lista
-    /*void quickSort() {
-        MPointer<Nodo<T>> last = getLastNode(cabeza);
-        QuickSort(cabeza, last);
-    }*/
 };
 
-#endif // LISTADOBLEENLAZADA_H
+#endif //LISTADOBLEENLAZADA_H

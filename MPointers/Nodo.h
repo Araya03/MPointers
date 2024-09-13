@@ -10,11 +10,11 @@ public:
     MPointer<Nodo<T>> siguiente;
     MPointer<Nodo<T>> anterior;
 
-    // Constructor por defecto
+    //Constructor por defecto
     Nodo() : data(T()), siguiente(nullptr), anterior(nullptr) {}
 
-    // Constructor con valor
+    //Constructor con valor
     Nodo(T valor) : data(valor), siguiente(nullptr), anterior(nullptr) {}
 };
 
-#endif // NODO_H
+#endif //NODO_H
