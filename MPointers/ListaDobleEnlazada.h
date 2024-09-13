@@ -37,16 +37,6 @@ public:
         std::cout << std::endl;
     }
 
-    // Imprimir la lista hacia atrás
-    /*void imprimirAtras() const {
-        MPointer<Nodo<T>> actual = cola;
-        while (!actual.isNull()) {
-            std::cout << actual->data << " ";
-            actual = actual->anterior;
-        }
-        std::cout << std::endl;
-    }*/
-
     //Eliminar un nodo de la lista
     void eliminar(T valor) {
         MPointer<Nodo<T>> actual = cabeza;
