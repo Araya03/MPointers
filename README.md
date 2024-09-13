@@ -7,4 +7,5 @@ Para probar MPointers:
 1) Se debe abrir una terminal.
 2) Escribir el comando "g++ -o (el nombre que desee) pruebas.cpp".
 3) Escribir "./(nombre elegido)"
+
 Esto ejecutará un archivo con varias pruebas.
