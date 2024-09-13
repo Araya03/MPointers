@@ -7,11 +7,11 @@
 #include <iostream>
 #include "Swap.h"
 
-// Implementación del InsertionSort
+//Implementación del InsertionSort
 template <typename T>
 void insertionSort(ListaDobleEnlazada<T>& lista) {
     if (lista.obtenerCabeza().isNull()) {
-        return; // Lista vacía
+        return; //Lista vacía
     }
 
     MPointer<Nodo<T>> head = lista.obtenerCabeza();
@@ -22,7 +22,7 @@ void insertionSort(ListaDobleEnlazada<T>& lista) {
         head = head->siguiente;
 
         if (sorted.isNull() || sorted->data >= current->data) {
-            // Insertar al principio
+            //Insertar al principio
             current->siguiente = sorted;
             current->anterior = nullptr;
             if (!sorted.isNull()) {
@@ -30,12 +30,12 @@ void insertionSort(ListaDobleEnlazada<T>& lista) {
             }
             sorted = current;
         } else {
-            // Encontrar la posición correcta
+            //Encontrar la posición correcta
             MPointer<Nodo<T>> temp = sorted;
             while (!temp->siguiente.isNull() && temp->siguiente->data < current->data) {
                 temp = temp->siguiente;
             }
-            // Insertar en la posición correcta
+            //Insertar en la posición correcta
             current->siguiente = temp->siguiente;
             if (!temp->siguiente.isNull()) {
                 temp->siguiente->anterior = current;
@@ -45,7 +45,7 @@ void insertionSort(ListaDobleEnlazada<T>& lista) {
         }
     }
 
-    // Actualizar la cabeza de la lista
+    //Actualizar la cabeza de la lista
     lista = ListaDobleEnlazada<T>();
     MPointer<Nodo<T>> last = sorted;
     while (!sorted.isNull()) {
@@ -54,4 +54,4 @@ void insertionSort(ListaDobleEnlazada<T>& lista) {
     }
 }
 
-#endif // INSERTIONSORT_H
+#endif //INSERTIONSORT_H

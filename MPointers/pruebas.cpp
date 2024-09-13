@@ -61,20 +61,16 @@ int main() {
     lista.insertar(30);
     lista.insertar(85);
 
-    //Imprimir la lista hacia adelante
-    std::cout << "Lista hacia adelante: ";
-    lista.imprimirAdelante();
-
-    //Imprimir la lista hacia atrás
-    std::cout << "Lista hacia atras: ";
-    lista.imprimirAtras();
+    //Imprimir la lista
+    std::cout << "Lista: ";
+    lista.imprimir();
 
     //Eliminar un valor
     lista.eliminar(20);
 
     //Imprimir la lista después de la eliminación
     std::cout << "Lista despues de eliminar 20: ";
-    lista.imprimirAdelante();
+    lista.imprimir();
 
     MPointerGC::getInstance().stopGC();
 
@@ -100,6 +96,8 @@ int main() {
     lista.insertar(85);
     lista.insertar(269);
     lista.insertar(13);
+    lista.insertar(503);
+    lista.insertar(1);
 
     //Imprimir la lista
     std::cout << "Lista: ";
