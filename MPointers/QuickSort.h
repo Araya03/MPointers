@@ -1,8 +1,12 @@
 #ifndef QUICKSORT_H
 #define QUICKSORT_H
 
-#include "Nodo.h"
 #include "MPointer.h"
+#include "Nodo.h"
+#include "ListaDobleEnlazada.h"
+
+#include <iostream>
+#include <utility> // Para std::swap
 
 // Función para encontrar el nodo con el valor mínimo
 template <typename T>
@@ -55,6 +59,13 @@ MPointer<Nodo<T>> getLastNode(MPointer<Nodo<T>> head) {
         temp = temp->siguiente;
     }
     return temp;
+}
+
+// Función para ordenar la lista con QuickSort
+template <typename T>
+void quickSort(ListaDobleEnlazada<T>& lista) {
+    MPointer<Nodo<T>> last = getLastNode(lista.obtenerCabeza());
+    QuickSort(lista.obtenerCabeza(), last);
 }
 
 #endif // QUICKSORT_H

@@ -99,15 +99,15 @@ int main() {
     lista.insertar(13);
 
     // Imprimir la lista hacia adelante
-    std::cout << "Lista hacia adelante: ";
+    std::cout << "Lista: ";
     lista.imprimirAdelante();
 
     // Imprimir la lista hacia atrás
-    std::cout << "Lista hacia atras: ";
-    lista.imprimirAtras();
+    /*std::cout << "Lista hacia atras: ";
+    lista.imprimirAtras();*/
 
     // Ordenar la lista usando QuickSort
-    lista.quickSort();
+    quickSort(lista);
     std::cout << "Lista ordenada con QuickSort: ";
     lista.imprimirAdelante();
 
