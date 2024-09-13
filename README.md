@@ -9,3 +9,5 @@ Para probar MPointers:
 3) Escribir "./(nombre elegido)"
 
 Esto ejecutará un archivo con varias pruebas.
+
+Dentro del archivo "pruebas.cpp" se encuentran varias opciones de código (comentadas) para probar distintas funcionalidades del proyecto. Si se desean utilizar únicamente se deben descomentar.
