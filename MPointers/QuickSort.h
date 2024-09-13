@@ -5,23 +5,7 @@
 #include "Nodo.h"
 #include "ListaDobleEnlazada.h"
 #include <iostream>
-#include <utility>
-
-//Función para encontrar el nodo con el valor mínimo
-template <typename T>
-MPointer<Nodo<T>> findMinNode(MPointer<Nodo<T>> start) {
-    MPointer<Nodo<T>> minNode = start;
-    MPointer<Nodo<T>> current = start;
-
-    while (!current.isNull()) {
-        if (current->data < minNode->data) {
-            minNode = current;
-        }
-        current = current->siguiente;
-    }
-
-    return minNode;
-}
+#include "Swap.h"
 
 //Función de partición para QuickSort
 template <typename T>
@@ -32,11 +16,11 @@ MPointer<Nodo<T>> partition(MPointer<Nodo<T>> low, MPointer<Nodo<T>> high) {
     for (MPointer<Nodo<T>> j = low; j != high; j = j->siguiente) {
         if (j->data < pivot) {
             i = (i.isNull()) ? low : i->siguiente;
-            std::swap(i->data, j->data);
+            swap(i->data, j->data);
         }
     }
     i = (i.isNull()) ? low : i->siguiente;
-    std::swap(i->data, high->data);
+    swap(i->data, high->data);
     return i;
 }
 
