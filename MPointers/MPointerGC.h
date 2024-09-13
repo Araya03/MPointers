@@ -5,8 +5,8 @@
 #include <thread>
 #include <chrono>
 #include <atomic>
-#include <list>
 #include <mutex>
+#include "ListaEnlazada.h"
 
 //Clase singleton para gestionar las instancias de MPointer
 class MPointerGC {
@@ -19,14 +19,13 @@ public:
     //Agregar MPointer a la lista
     void addPointer(void* ptr, int id) {
         std::lock_guard<std::mutex> lock(mtx);
-        pointers.push_back({ptr, id});
-        //std::cout << "Anadido puntero con ID: " << id << std::endl;
+        pointers.append({ptr, id});
     }
 
     //Eliminar MPointer de la lista
     void removePointer(void* ptr) {
         std::lock_guard<std::mutex> lock(mtx);
-        pointers.remove_if([ptr](const PointerInfo& info) { return info.ptr == ptr; });
+        pointers.remove(PointerInfo(ptr, 0));
     }
 
     //Generar nuevo ID
@@ -44,13 +43,9 @@ public:
 
     //Parar el thread del GC
     void stopGC() {
-        //std::cout << "Solicitando parada del hilo del recolector de basura..." << std::endl;
         running = false;
-        // Asegúrate de que el hilo del GC termine correctamente
         if (gcThread.joinable()) {
-            //std::cout << "Esperando a que el hilo del recolector de basura termine..." << std::endl;
             gcThread.join();
-            //std::cout << "Hilo del recolector de basura detenido." << std::endl;
         }
     }
 
@@ -64,40 +59,55 @@ private:
     }
 
     void cleanup() {
-        //std::cout << "Ejecutando limpieza de recolector de basura" << std::endl;
         std::lock_guard<std::mutex> lock(mtx);
-        
-        std::list<void*> toDelete;
-        
-        for (auto it = pointers.begin(); it != pointers.end(); ++it) {
+
+        LinkedList<void*> toDelete;
+
+        // Buscar punteros sin referencias
+        Node<PointerInfo>* it = pointers.begin();
+        while (it) {
             bool hasReferences = false;
-            
-            for (auto jt = pointers.begin(); jt != pointers.end(); ++jt) {
-                if (jt->ptr == it->ptr && jt != it) {
+            Node<PointerInfo>* jt = pointers.begin();
+            while (jt) {
+                if (jt->data.ptr == it->data.ptr && jt != it) {
                     hasReferences = true;
                     break;
                 }
+                jt = jt->next;
             }
 
             if (!hasReferences) {
-                //std::cout << "Marcando puntero con ID: " << it->id << " para liberacion" << std::endl;
-                toDelete.push_back(it->ptr);
+                toDelete.append(it->data.ptr);
             }
+
+            it = it->next;
         }
 
+        //Liberar los punteros no referenciados
+        Node<void*>* deleteNode = toDelete.begin();
+        while (deleteNode) {
+            delete static_cast<int*>(deleteNode->data);
+            deleteNode = deleteNode->next;
+        }
+
+        //Eliminar los punteros de la lista
         for (auto ptr : toDelete) {
-            //std::cout << "Liberando puntero: " << ptr << std::endl;
-            delete static_cast<int*>(ptr); // Ajusta el tipo según sea necesario
-            pointers.remove_if([ptr](const PointerInfo& info) { return info.ptr == ptr; });
+            pointers.remove(PointerInfo(deleteNode->data, 0));
         }
     }
 
     struct PointerInfo {
         void* ptr;
         int id;
+        
+        PointerInfo(void* p, int i) : ptr(p), id(i) {}
+
+        bool operator==(const PointerInfo& other) const {
+            return ptr == other.ptr;
+        }
     };
 
-    std::list<PointerInfo> pointers;
+    LinkedList<PointerInfo> pointers;
     int currentId;
     std::atomic<bool> running;
     int interval;
